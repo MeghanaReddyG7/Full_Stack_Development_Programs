@@ -9,7 +9,14 @@ let db;
 
 client.connect().then(() => {
     db=client.db(dbName);
+
     console.log(`Connected to database:${dbName}`);
+      const PORT = process.env.PORT || 8080;
+
+        app.listen(PORT, () => {
+            console.log(`Server is running on port http://localhost:${PORT}`);
+        });
+    
 }).catch((err) => {
     console.error("Error connecting to database:", err);
 });
@@ -38,7 +45,7 @@ app.get("/api/v1/books", async (req, res) => {
         res.status(200).json({message:"Books fetched successfully","data":result});
     }).catch((err) => {
         err.message="Problem in fetching books";
-        throw error;
+        throw err;
     });
 });
 
@@ -55,7 +62,7 @@ app.get("/api/v1/books/:id", (req, res) => {
         }
     }).catch((err) => {
         err.message="Problem in fetching book details";
-        throw error;
+        throw err;
     });
 } );
 
@@ -71,7 +78,7 @@ app.put("/api/v1/books/:id", (req,res)=>{
         }
     }).catch((err)=>{
         err.message="Problem in updating book details";
-        throw error;
+        throw err;
     });
 })
 
@@ -86,7 +93,7 @@ app.delete("/api/v1/books/:id",(req,res)=>{
         }
     }).catch((err)=>{
         err.message="Problem in deleting book details";
-        throw error;
+        throw err;
     });
 });
 
@@ -101,6 +108,3 @@ app.use((req, res, next) => {
     res.status(404).json({ message: "Route not found" });
 });
 
-app.listen(8080, () => {
-    console.log("Server is running on port http://localhost:8080");
-});
